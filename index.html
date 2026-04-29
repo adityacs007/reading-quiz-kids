@@ -38,12 +38,18 @@
             <div class="card">
                 <label for="level-select">Reading Level (A-Z):</label>
                 <select id="level-select">
-                    <option value="A">Level A (Kindergarten)</option>
-                    <option value="C">Level C (Early 1st Grade)</option>
-                    <option value="E" selected>Level E (Mid-1st Grade)</option>
-                    <option value="J">Level J (End of 2nd Grade)</option>
-                    <option value="M">Level M (End of 3rd Grade)</option>
-                    <option value="Q">Level Q (End of 4th Grade)</option>
+                    <optgroup label="Reading Comprehension">
+                        <option value="A">Level A (Kindergarten)</option>
+                        <option value="C">Level C (Early 1st Grade)</option>
+                        <option value="E" selected>Level E (Mid-1st Grade)</option>
+                        <option value="J">Level J (End of 2nd Grade)</option>
+                        <option value="M">Level M (End of 3rd Grade)</option>
+                        <option value="Q">Level Q (End of 4th Grade)</option>
+                    </optgroup>
+                    <optgroup label="Logic Puzzles & Brain Teasers">
+                        <option value="logic-easy">Logic Puzzles (Easy - Grades 1-2)</option>
+                        <option value="logic-hard">Logic Puzzles (Hard - Grades 3-5)</option>
+                    </optgroup>
                 </select>
 
                 <label for="topic-input">Topic (Optional):</label>
