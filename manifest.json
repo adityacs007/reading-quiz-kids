@@ -1,0 +1,17 @@
+{
+  "name": "Reading Quiz Kids",
+  "short_name": "Read Quiz",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#F0F4F8",
+  "theme_color": "#4A90E2",
+  "description": "AI-powered reading comprehension app for kids",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

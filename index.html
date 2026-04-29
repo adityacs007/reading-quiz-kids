@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Reading Quiz Kids</title>
+    <meta name="description" content="AI-powered reading comprehension for kids">
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png">
+    <meta name="theme-color" content="#4A90E2">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content card">
+            <h2>⚙️ Settings</h2>
+            <p style="margin-bottom: 15px;">Paste your Gemini API Key here to generate stories. It is stored securely in your browser.</p>
+            <input type="password" id="api-key-input" placeholder="AIzaSy..." autocomplete="off">
+            <button id="save-settings-btn" class="primary-btn" style="margin-top: 15px;">Save Key</button>
+            <button id="close-settings-btn" class="secondary-btn" style="margin-top: 10px;">Close</button>
+            <p style="margin-top: 10px; font-size: 0.9em; text-align: center;"><a href="https://aistudio.google.com/app/apikey" target="_blank">Get a free API key here</a></p>
+        </div>
+    </div>
+
+    <div id="app">
+        <!-- Setup Screen -->
+        <div id="setup-screen" class="screen active">
+            <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; margin-bottom: 20px;">
+                <h1 style="margin: 0; text-align: left;">Reading Kids 📖</h1>
+                <button id="open-settings-btn" class="icon-btn" style="background: none; box-shadow: none; font-size: 24px; color: var(--primary);">⚙️</button>
+            </div>
+            
+            <div class="card">
+                <label for="level-select">Reading Level (A-Z):</label>
+                <select id="level-select">
+                    <option value="A">Level A (Kindergarten)</option>
+                    <option value="C">Level C (Early 1st Grade)</option>
+                    <option value="E" selected>Level E (Mid-1st Grade)</option>
+                    <option value="J">Level J (End of 2nd Grade)</option>
+                    <option value="M">Level M (End of 3rd Grade)</option>
+                    <option value="Q">Level Q (End of 4th Grade)</option>
+                </select>
+
+                <label for="topic-input">Topic (Optional):</label>
+                <input type="text" id="topic-input" placeholder="e.g. Dinosaurs, Space, Cats">
+
+                <label for="user-minutes">Minutes to read & quiz:</label>
+                <div class="time-selector">
+                    <button id="minus-time" class="icon-btn" aria-label="Decrease time">➖</button>
+                    <input type="number" id="user-minutes" value="5" min="1" max="60" readonly>
+                    <button id="plus-time" class="icon-btn" aria-label="Increase time">➕</button>
+                </div>
+
+                <button id="start-btn" class="primary-btn pulse">Generate Story! ✨</button>
+                <div id="setup-error" class="error-msg"></div>
+            </div>
+        </div>
+
+        <!-- Loading Screen -->
+        <div id="loading-screen" class="screen">
+            <h1>Writing your story...</h1>
+            <div class="loader">✍️</div>
+            <p id="loading-tips" style="margin-top: 20px; font-weight: bold; text-align: center;">Asking AI for a great tale...</p>
+        </div>
+
+        <!-- Reading Screen -->
+        <div id="reading-screen" class="screen">
+            <div class="header">
+                <div id="read-timer" class="badge timer-badge">00:00</div>
+            </div>
+            <div class="card reading-card">
+                <h2 id="story-title">Your Story</h2>
+                <div id="story-content" class="story-text"></div>
+                <button id="finished-reading-btn" class="primary-btn">I'm ready for the quiz! 🚀</button>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="screen">
+            <div class="header">
+                <div id="quiz-timer" class="badge timer-badge">00:00</div>
+                <div id="question-counter" class="badge score-badge">Q 1/3</div>
+            </div>
+            <div class="card game-card">
+                <div id="question-text" class="question">Question goes here?</div>
+                <div id="options-container" class="options-area">
+                    <!-- Options injected via JS -->
+                </div>
+            </div>
+            <div id="feedback-area" class="feedback"></div>
+        </div>
+
+        <!-- End Screen -->
+        <div id="end-screen" class="screen">
+            <h1>Great Job! 🎉</h1>
+            <div class="card">
+                <h2>You got</h2>
+                <div id="final-score" class="final-score">0/3</div>
+                <h2>correct! ⭐</h2>
+                <button id="restart-btn" class="primary-btn bounce">Read Another 🔄</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script src="app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js');
+            });
+        }
+    </script>
+</body>
+</html>
