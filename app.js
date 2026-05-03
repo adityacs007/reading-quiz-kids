@@ -20,6 +20,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('settings-modal');
     const apiKeyInput = document.getElementById('api-key-input');
     
+    // Magic Link Hash parsing
+    if (window.location.hash.startsWith('#k=')) {
+        try {
+            const decoded = atob(window.location.hash.substring(3));
+            if (decoded.startsWith('AIzaSy')) {
+                localStorage.setItem('geminiApiKey', decoded);
+                window.history.replaceState(null, null, ' '); // remove hash
+            }
+        } catch(e) {}
+    }
+
+    // Short Password Decoder
+    // If you want me to hardcode your key, I will place it in this string:
+    const ENCRYPTED_KEY = ""; 
+    function decodeShortPass(pass) {
+        if (!ENCRYPTED_KEY) return pass;
+        try {
+            let decoded = atob(ENCRYPTED_KEY);
+            let result = '';
+            for(let i=0; i<decoded.length; i++) {
+                result += String.fromCharCode(decoded.charCodeAt(i) ^ pass.charCodeAt(i % pass.length));
+            }
+            if (result.startsWith("AIzaSy")) return result;
+        } catch(e) {}
+        return pass;
+    }
+
     // Load saved API Key
     const savedKey = localStorage.getItem('geminiApiKey');
     if (savedKey) apiKeyInput.value = savedKey;
@@ -28,12 +55,24 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('open-settings-btn').addEventListener('click', () => modal.classList.add('active'));
     document.getElementById('close-settings-btn').addEventListener('click', () => modal.classList.remove('active'));
     document.getElementById('save-settings-btn').addEventListener('click', () => {
-        const key = apiKeyInput.value.trim();
+        let key = apiKeyInput.value.trim();
         if (key) {
+            key = decodeShortPass(key);
             localStorage.setItem('geminiApiKey', key);
+            apiKeyInput.value = key; // Update visual field to show it unlocked
             modal.classList.remove('active');
         } else {
-            alert('Please enter a valid key');
+            alert('Please enter a valid key or short password');
+        }
+    });
+
+    document.getElementById('magic-link-btn').addEventListener('click', () => {
+        const key = localStorage.getItem('geminiApiKey') || apiKeyInput.value.trim();
+        if (key && key.startsWith('AIzaSy')) {
+            const url = window.location.origin + window.location.pathname + '#k=' + btoa(key);
+            prompt('Copy this Magic Link and send it to your other devices! When they open this link, the key is automatically saved.', url);
+        } else {
+            alert('Please save a valid API key first to generate a Magic Link.');
         }
     });
 
@@ -87,15 +126,41 @@ document.addEventListener('DOMContentLoaded', () => {
     // Reading Phase
     function startReading() {
         document.getElementById('story-title').innerText = state.storyData.storyTitle;
-        const contentDiv = document.getElementById('story-content');
-        contentDiv.innerHTML = state.storyData.storyText.map(p => `<p>${p}</p>`).join('');
+        const contentHtml = state.storyData.storyText.map(p => `<p>${p}</p>`).join('');
+        document.getElementById('story-content').innerHTML = contentHtml;
+        
+        // Populate the quiz tab version
+        document.getElementById('quiz-story-title').innerText = state.storyData.storyTitle;
+        document.getElementById('quiz-story-content').innerHTML = contentHtml;
         
         switchScreen('reading');
         startTimer();
     }
 
+    // Tab Logic
+    const tabQuizBtn = document.getElementById('tab-quiz-btn');
+    const tabPassageBtn = document.getElementById('tab-passage-btn');
+    const quizContent = document.getElementById('quiz-tab-content');
+    const passageContent = document.getElementById('passage-tab-content');
+
+    tabQuizBtn.addEventListener('click', () => {
+        tabQuizBtn.classList.add('active');
+        tabPassageBtn.classList.remove('active');
+        quizContent.classList.add('active');
+        passageContent.classList.remove('active');
+    });
+
+    tabPassageBtn.addEventListener('click', () => {
+        tabPassageBtn.classList.add('active');
+        tabQuizBtn.classList.remove('active');
+        passageContent.classList.add('active');
+        quizContent.classList.remove('active');
+    });
+
     document.getElementById('finished-reading-btn').addEventListener('click', () => {
         loadQuestion();
+        // Ensure Quiz tab is active when entering quiz screen
+        tabQuizBtn.click();
         switchScreen('quiz');
     });
 
