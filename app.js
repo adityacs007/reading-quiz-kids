@@ -20,16 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('settings-modal');
     const apiKeyInput = document.getElementById('api-key-input');
     
-    // Magic Link Hash parsing
-    if (window.location.hash.startsWith('#k=')) {
-        try {
-            const decoded = atob(window.location.hash.substring(3));
-            if (decoded.startsWith('AIzaSy')) {
-                localStorage.setItem('geminiApiKey', decoded);
-                window.history.replaceState(null, null, ' '); // remove hash
-            }
-        } catch(e) {}
-    }
+
 
     // Short Password Decoder
     // If you want me to hardcode your key, I will place it in this string:
@@ -66,15 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    document.getElementById('magic-link-btn').addEventListener('click', () => {
-        const key = localStorage.getItem('geminiApiKey') || apiKeyInput.value.trim();
-        if (key && key.startsWith('AIzaSy')) {
-            const url = window.location.origin + window.location.pathname + '#k=' + btoa(key);
-            prompt('Copy this Magic Link and send it to your other devices! When they open this link, the key is automatically saved.', url);
-        } else {
-            alert('Please save a valid API key first to generate a Magic Link.');
-        }
-    });
+
 
     // Time Selectors
     const userMins = document.getElementById('user-minutes');
