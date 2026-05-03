@@ -1,4 +1,4 @@
-const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
+const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
 
 async function generateReadingContent(apiKey, level, topic) {
     let prompt = "";
@@ -46,12 +46,16 @@ Output strictly valid JSON with this exact structure:
         });
 
         if (!response.ok) {
-            const errorData = await response.json();
+            const errorData = await response.json().catch(() => ({}));
             throw new Error(errorData.error?.message || "Failed to generate story from API.");
         }
 
         const data = await response.json();
-        const jsonString = data.candidates[0].content.parts[0].text;
+        let jsonString = data.candidates[0].content.parts[0].text;
+        
+        // Strip out markdown code block if present
+        jsonString = jsonString.replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/i, '');
+        
         return JSON.parse(jsonString);
     } catch (error) {
         console.error("API Error:", error);
