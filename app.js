@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Short Password Decoder
     // If you want me to hardcode your key, I will place it in this string:
-    const ENCRYPTED_KEY = ""; 
+    const ENCRYPTED_KEY = "LCwfEzIUISI/BgIULzk5ACkQOBYDAzAeWCYpOgFSBwE/CypVVDUR"; 
     function decodeShortPass(pass) {
         if (!ENCRYPTED_KEY) return pass;
         try {
