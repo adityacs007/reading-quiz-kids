@@ -15,24 +15,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Settings Modal -->
-    <div id="settings-modal" class="modal">
-        <div class="modal-content card">
-            <h2>⚙️ Settings</h2>
-            <p style="margin-bottom: 15px;">Paste your Gemini API Key here. Or, ask the developer for your "Short Password" and type it here!</p>
-            <input type="password" id="api-key-input" placeholder="API Key or Short Password" autocomplete="off">
-            <button id="save-settings-btn" class="primary-btn" style="margin-top: 15px;">Save Key</button>
-            <button id="close-settings-btn" class="secondary-btn" style="margin-top: 10px;">Close</button>
-            <p style="margin-top: 10px; font-size: 0.9em; text-align: center;"><a href="https://aistudio.google.com/app/apikey" target="_blank">Get a free API key here</a></p>
-        </div>
-    </div>
+
 
     <div id="app">
+        <!-- Unlock Screen -->
+        <div id="unlock-screen" class="screen">
+            <h1>Welcome! 👋</h1>
+            <div class="card" style="text-align: center;">
+                <p style="margin-bottom: 15px; font-size: 1.2rem;">Please enter the password to unlock the app.</p>
+                <input type="password" id="login-password-input" placeholder="Password..." autocomplete="off">
+                <button id="login-btn" class="primary-btn" style="margin-top: 15px;">Unlock 🔓</button>
+                <div id="login-error" class="error-msg"></div>
+            </div>
+        </div>
+
         <!-- Setup Screen -->
-        <div id="setup-screen" class="screen active">
-            <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; margin-bottom: 20px;">
-                <h1 style="margin: 0; text-align: left;">Reading Kids 📖 <span style="font-size: 0.5em; background: #2ECC71; color: white; padding: 5px 10px; border-radius: 12px; vertical-align: middle;">v4 TEST</span></h1>
-                <button id="open-settings-btn" class="icon-btn" style="background: none; box-shadow: none; font-size: 24px; color: var(--primary);">⚙️</button>
+        <div id="setup-screen" class="screen">
+            <div style="display: flex; justify-content: center; width: 100%; align-items: center; margin-bottom: 20px;">
+                <h1 style="margin: 0; text-align: center;">Reading Kids 📖 <span style="font-size: 0.5em; background: #2ECC71; color: white; padding: 5px 10px; border-radius: 12px; vertical-align: middle;">v6 TEST</span></h1>
             </div>
             
             <div class="card">

@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Elements
     const screens = {
+        unlock: document.getElementById('unlock-screen'),
         setup: document.getElementById('setup-screen'),
         loading: document.getElementById('loading-screen'),
         reading: document.getElementById('reading-screen'),
@@ -17,13 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
         end: document.getElementById('end-screen')
     };
 
-    const modal = document.getElementById('settings-modal');
-    const apiKeyInput = document.getElementById('api-key-input');
-    
-
-
     // Short Password Decoder
-    // If you want me to hardcode your key, I will place it in this string:
     const ENCRYPTED_KEY = "LCwfEzIUISI/BgIULzk5ACkQOBYDAzAeWCYpOgFSBwE/CypVVDUR"; 
     function decodeShortPass(pass) {
         if (!ENCRYPTED_KEY) return pass;
@@ -38,22 +33,31 @@ document.addEventListener('DOMContentLoaded', () => {
         return pass;
     }
 
-    // Load saved API Key
-    const savedKey = localStorage.getItem('geminiApiKey');
-    if (savedKey) apiKeyInput.value = savedKey;
+    function switchScreen(screenName) {
+        Object.values(screens).forEach(s => s.classList.remove('active'));
+        screens[screenName].classList.add('active');
+    }
 
-    // Settings Modal
-    document.getElementById('open-settings-btn').addEventListener('click', () => modal.classList.add('active'));
-    document.getElementById('close-settings-btn').addEventListener('click', () => modal.classList.remove('active'));
-    document.getElementById('save-settings-btn').addEventListener('click', () => {
-        let key = apiKeyInput.value.trim();
-        if (key) {
-            key = decodeShortPass(key);
-            localStorage.setItem('geminiApiKey', key);
-            apiKeyInput.value = key; // Update visual field to show it unlocked
-            modal.classList.remove('active');
+    // Initial Screen Check
+    const savedKey = localStorage.getItem('geminiApiKey');
+    if (!savedKey) {
+        switchScreen('unlock');
+    } else {
+        switchScreen('setup');
+    }
+
+    // Unlock Screen Logic
+    document.getElementById('login-btn').addEventListener('click', () => {
+        const pass = document.getElementById('login-password-input').value.trim();
+        if (!pass) return;
+        
+        const decodedKey = decodeShortPass(pass);
+        if (decodedKey.startsWith("AIzaSy")) {
+            localStorage.setItem('geminiApiKey', decodedKey);
+            document.getElementById('login-error').innerText = "";
+            switchScreen('setup');
         } else {
-            alert('Please enter a valid key or short password');
+            document.getElementById('login-error').innerText = "Incorrect password! Please try again.";
         }
     });
 
@@ -70,10 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (val < 60) userMins.value = val + 1;
     });
 
-    function switchScreen(screenName) {
-        Object.values(screens).forEach(s => s.classList.remove('active'));
-        screens[screenName].classList.add('active');
-    }
+
 
     // Start App
     document.getElementById('start-btn').addEventListener('click', async () => {
@@ -81,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const errorMsg = document.getElementById('setup-error');
         
         if (!apiKey) {
-            errorMsg.innerText = "Please click the ⚙️ gear icon and enter your API Key first!";
+            switchScreen('unlock');
             return;
         }
         errorMsg.innerText = "";
