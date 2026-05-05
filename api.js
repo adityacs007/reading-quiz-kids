@@ -2,7 +2,22 @@ const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/
 
 async function generateReadingContent(apiKey, level, topic) {
     let prompt = "";
-    if (level.startsWith("logic")) {
+    if (level === "math-word") {
+        prompt = `Act as a 2nd grade math teacher. Generate a fun, engaging story about '${topic || "a fun adventure"}'. The text must be 2 to 3 paragraphs long. Following the text, generate exactly 10 multiple-choice math word problems based on the story. The math problems should test Grade 2 level addition, subtraction, or basic multiplication, requiring the student to read the question carefully to figure out the math.
+
+Output strictly valid JSON with this exact structure:
+{
+  "storyTitle": "Title of the Math Story",
+  "storyText": ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+  "questions": [
+    {
+      "question": "The math word problem?",
+      "options": ["Option A", "Option B", "Option C", "Option D"],
+      "correctAnswerIndex": 0
+    }
+  ]
+}`;
+    } else if (level.startsWith("logic")) {
         const difficulty = level.includes("easy") ? "early elementary school" : "late elementary school";
         prompt = `Act as a logic puzzle expert for kids. Generate a fun, text-based logic puzzle or brain teaser at a ${difficulty} difficulty level about '${topic || "a fun mystery"}'. The text must be 1 to 2 paragraphs setting up the puzzle or sequence. Following the text, generate exactly 4 multiple-choice questions testing their deductive reasoning or math logic. 
 
