@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
         unlock: document.getElementById('unlock-screen'),
         setup: document.getElementById('setup-screen'),
         loading: document.getElementById('loading-screen'),
-        reading: document.getElementById('reading-screen'),
         quiz: document.getElementById('quiz-screen'),
         end: document.getElementById('end-screen')
     };
@@ -113,11 +112,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const contentHtml = state.storyData.storyText.map(p => `<p>${p}</p>`).join('');
         document.getElementById('story-content').innerHTML = contentHtml;
         
-        // Populate the quiz tab version
-        document.getElementById('quiz-story-title').innerText = state.storyData.storyTitle;
-        document.getElementById('quiz-story-content').innerHTML = contentHtml;
+        loadQuestion(); // Prepare the first question immediately
         
-        switchScreen('reading');
+        // Ensure Passage tab is active when entering the game screen
+        tabPassageBtn.click();
+        
+        switchScreen('quiz');
         startTimer();
     }
 
@@ -142,10 +142,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('finished-reading-btn').addEventListener('click', () => {
-        loadQuestion();
-        // Ensure Quiz tab is active when entering quiz screen
+        // Just switch to the Quiz Tab!
         tabQuizBtn.click();
-        switchScreen('quiz');
+        window.scrollTo(0,0);
     });
 
     // Quiz Phase
@@ -216,7 +215,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const s = state.secondsLeft % 60;
         const timeStr = (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
         
-        document.getElementById('read-timer').innerText = timeStr;
         document.getElementById('quiz-timer').innerText = timeStr;
     }
 

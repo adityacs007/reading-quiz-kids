@@ -32,7 +32,7 @@
         <!-- Setup Screen -->
         <div id="setup-screen" class="screen">
             <div style="display: flex; justify-content: center; width: 100%; align-items: center; margin-bottom: 20px;">
-                <h1 style="margin: 0; text-align: center;">Reading Kids 📖 <span style="font-size: 0.5em; background: #2ECC71; color: white; padding: 5px 10px; border-radius: 12px; vertical-align: middle;">v6 TEST</span></h1>
+                <h1 style="margin: 0; text-align: center;">Reading Kids 📖 <span style="font-size: 0.5em; background: #2ECC71; color: white; padding: 5px 10px; border-radius: 12px; vertical-align: middle;">v7 TEST</span></h1>
             </div>
             
             <div class="card">
@@ -74,19 +74,7 @@
             <p id="loading-tips" style="margin-top: 20px; font-weight: bold; text-align: center;">Asking AI for a great tale...</p>
         </div>
 
-        <!-- Reading Screen -->
-        <div id="reading-screen" class="screen">
-            <div class="header">
-                <div id="read-timer" class="badge timer-badge">00:00</div>
-            </div>
-            <div class="card reading-card">
-                <h2 id="story-title">Your Story</h2>
-                <div id="story-content" class="story-text"></div>
-                <button id="finished-reading-btn" class="primary-btn">I'm ready for the quiz! 🚀</button>
-            </div>
-        </div>
-
-        <!-- Quiz Screen -->
+        <!-- Game Screen (Merged Reading + Quiz) -->
         <div id="quiz-screen" class="screen">
             <div class="header">
                 <div id="quiz-timer" class="badge timer-badge">00:00</div>
@@ -94,11 +82,19 @@
             </div>
 
             <div class="tabs-container">
-                <button id="tab-quiz-btn" class="tab-btn active">Question</button>
-                <button id="tab-passage-btn" class="tab-btn">Passage</button>
+                <button id="tab-passage-btn" class="tab-btn active">Passage</button>
+                <button id="tab-quiz-btn" class="tab-btn">Questions</button>
             </div>
 
-            <div id="quiz-tab-content" class="tab-content active">
+            <div id="passage-tab-content" class="tab-content active">
+                <div class="card reading-card">
+                    <h2 id="story-title">Your Story</h2>
+                    <div id="story-content" class="story-text"></div>
+                    <button id="finished-reading-btn" class="primary-btn bounce" style="margin-top: 20px;">Go to Questions ➡️</button>
+                </div>
+            </div>
+
+            <div id="quiz-tab-content" class="tab-content">
                 <div class="card game-card">
                     <div id="question-text" class="question">Question goes here?</div>
                     <div id="options-container" class="options-area">
@@ -106,13 +102,6 @@
                     </div>
                 </div>
                 <div id="feedback-area" class="feedback"></div>
-            </div>
-
-            <div id="passage-tab-content" class="tab-content">
-                <div class="card reading-card">
-                    <h2 id="quiz-story-title">Your Story</h2>
-                    <div id="quiz-story-content" class="story-text"></div>
-                </div>
             </div>
         </div>
 

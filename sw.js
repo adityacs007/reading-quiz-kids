@@ -1,4 +1,4 @@
-const CACHE_NAME = 'reading-fun-v6';
+const CACHE_NAME = 'reading-fun-v8';
 const ASSETS = [
   './',
   './index.html',
